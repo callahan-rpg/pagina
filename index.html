@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Callahan Alistair Hargreaves — Ficha de Personagem</title>
+  <meta name="description" content="Callahan Alistair Hargreaves — Herdeiro dos Hargreaves, Lycanthropus. Ficha de personagem RPG no universo de Harry Potter." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet" />
+  <!-- Chess dependencies -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css" />
+  <style>
+    /* =============================================
+       DESIGN TOKENS
+    ============================================= */
+    :root {
+      --bg-main:      #0F1014;
+      --bg-2:         #121318;
+      --bg-3:         #0B0C0F;
+      --black:        #000000;
+
+      --text-primary:   #F1F1EE;
+      --text-secondary: #C7C7C2;
+      --text-muted:     #85858A;
+      --text-disabled:  #44464B;
+
+      --border:       #292B30;
+      --border-light: rgba(255,255,255,0.08);
+
+      --accent:       #8B1A1A;
+      --accent-light: #A52828;
+      --accent-dark:  #6B0F0F;
+      --accent-glow:  rgba(139,26,26,0.18);
+
+      --font-display: 'Oswald', sans-serif;
+      --font-body:    'Inter', sans-serif;
+      --font-scroll:  'IM Fell English', serif;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+    }
+
+    /* =============================================
+       UTILITIES
+    ============================================= */
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+    }
+    .eyebrow-accent {
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-light);
+    }
+    .section-no { display: flex; flex-direction: column; line-height: 1; }
+    .section-no .no-label {
+      font-family: var(--font-body);
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-disabled);
+    }
+    .section-no .no-value {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--text-disabled);
+      line-height: 1;
+    }
+    .metadata-block { display: flex; gap: 40px; }
+    .metadata-item { display: flex; flex-direction: column; gap: 4px; }
+    .metadata-label {
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+    }
+    .metadata-value {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-primary);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 56px;
+    }
+    .accent-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent-glow);
+      flex-shrink: 0;
+    }
+
+    /* =============================================
+       REVEAL ANIMATIONS
+    ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 750ms var(--ease-out-expo), transform 750ms var(--ease-out-expo);
+    }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .reveal-img {
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity 900ms var(--ease-out-expo), transform 900ms var(--ease-out-expo);
+    }
+    .reveal-img.revealed { opacity: 1; transform: scale(1); }
+    .delay-1 { transition-delay: 80ms; }
+    .delay-2 { transition-delay: 160ms; }
+    .delay-3 { transition-delay: 240ms; }
+    .delay-4 { transition-delay: 320ms; }
+
+    /* =============================================
+       HEADER
+    ============================================= */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      padding: 0 56px;
+      border-bottom: 1px solid var(--border-light);
+      background: rgba(15,16,20,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-symbol { width: 28px; height: 28px; }
+    .logo-symbol svg { width: 100%; height: 100%; }
+    .logo-text {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.20em;
+      color: var(--text-primary);
+    }
+    .logo-text span { color: var(--accent-light); }
+    .nav { display: flex; align-items: center; gap: 36px; }
+    .nav a {
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      transition: color 200ms;
+    }
+    .nav a:hover { color: var(--accent-light); }
+
+    /* =============================================
+       HERO
+    ============================================= */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-top: 80px;
+      overflow: hidden;
+      background: var(--bg-3);
+    }
+    .hero-giant-text {
+      position: absolute;
+      bottom: -20px; left: -20px;
+      font-family: var(--font-display);
+      font-size: 420px;
+      font-weight: 700;
+      font-style: italic;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.018);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      z-index: 0;
+    }
+    .hero-images { position: absolute; inset: 0; z-index: 1; }
+    .hero-img-left {
+      position: absolute;
+      left: 0; top: 80px; bottom: 0;
+      width: 42%;
+      overflow: hidden;
+    }
+    .hero-img-left img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: contrast(1.12) brightness(0.88) saturate(0.75);
+    }
+    .hero-img-left::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 40%, var(--bg-3) 100%),
+                  linear-gradient(to top, var(--bg-3) 0%, transparent 30%);
+    }
+    .hero-img-right {
+      position: absolute;
+      right: 0; top: 80px; bottom: 0;
+      width: 48%;
+      overflow: hidden;
+    }
+    .hero-img-right img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: contrast(1.15) brightness(0.82) saturate(0.7);
+    }
+    .hero-img-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to left, transparent 35%, var(--bg-3) 100%),
+                  linear-gradient(to top, var(--bg-3) 0%, transparent 25%);
+    }
+    .hero-bottom-fade {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 300px;
+      background: linear-gradient(to top, var(--bg-main) 0%, transparent 100%);
+      z-index: 2;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding: 0 56px 120px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-number { margin-bottom: 48px; }
+    .hero-eyebrow { margin-bottom: 16px; }
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: 0.88;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+    .hero-title .line1 { font-size: clamp(64px, 8vw, 100px); display: block; }
+    .hero-title .line2 { font-size: clamp(64px, 8vw, 100px); display: block; }
+    .hero-title .line3 {
+      font-size: clamp(32px, 4vw, 52px);
+      display: block;
+      color: var(--accent-light);
+      letter-spacing: 0.08em;
+      margin-top: 8px;
+    }
+    .hero-desc {
+      max-width: 520px;
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--text-muted);
+      margin: 0 auto 40px;
+    }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-light);
+      width: 100%;
+      max-width: 640px;
+    }
+
+    /* =============================================
+       PARCHMENT / SCROLL SECTION
+    ============================================= */
+    .scroll-section {
+      background: var(--bg-main);
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-section-header {
+      display: flex;
+      align-items: flex-end;
+      gap: 32px;
+      margin-bottom: 64px;
+    }
+    .scroll-section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 700;
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: 0.88;
+      color: var(--text-primary);
+    }
+
+    /* The parchment container */
+    .parchment {
+      position: relative;
+      max-width: 860px;
+      margin: 0 auto;
+      background: #100C08;
+      border: 1px solid #2E1E10;
+      padding: 72px 80px 48px;
+      overflow: hidden;
+    }
+    .parchment-content-wrap {
+      position: relative;
+      max-height: 480px;
+      overflow: hidden;
+      transition: max-height 800ms var(--ease-out-expo);
+    }
+    .parchment-content-wrap.expanded {
+      max-height: 8000px;
+    }
+    .parchment-fade {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 180px;
+      background: linear-gradient(to top, #100C08 15%, transparent 100%);
+      pointer-events: none;
+      z-index: 2;
+      transition: opacity 300ms;
+    }
+    .parchment-content-wrap.expanded .parchment-fade {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .read-more-btn-wrap {
+      text-align: center;
+      margin-top: 36px;
+      position: relative;
+      z-index: 3;
+    }
+    .read-more-link {
+      font-family: var(--font-scroll);
+      font-size: 15px;
+      font-style: italic;
+      color: var(--accent-light);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      transition: color 250ms;
+      outline: none;
+    }
+    .read-more-link:hover {
+      color: var(--text-primary);
+    }
+
+    /* Aged edges */
+    .parchment::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at top left, rgba(60,30,10,0.5) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(40,20,8,0.6) 0%, transparent 50%),
+        radial-gradient(ellipse at top right, rgba(30,10,5,0.4) 0%, transparent 45%),
+        radial-gradient(ellipse at bottom left, rgba(50,25,8,0.5) 0%, transparent 45%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Blood stains */
+    .parchment::after {
+      content: '';
+      position: absolute;
+      top: 18px; right: 64px;
+      width: 48px; height: 32px;
+      background: radial-gradient(ellipse at 40% 40%, rgba(100,10,10,0.55) 0%, rgba(70,8,8,0.3) 40%, transparent 70%);
+      border-radius: 50% 30% 60% 40%;
+      transform: rotate(-15deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .parchment-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Extra blood stain elements */
+    .blood-1 {
+      position: absolute;
+      bottom: 40px; left: 48px;
+      width: 60px; height: 20px;
+      background: radial-gradient(ellipse, rgba(90,8,8,0.45) 0%, rgba(60,6,6,0.2) 50%, transparent 70%);
+      border-radius: 60% 40% 50% 60%;
+      transform: rotate(8deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blood-2 {
+      position: absolute;
+      top: 30%; right: 24px;
+      width: 12px; height: 36px;
+      background: linear-gradient(to bottom, rgba(90,8,8,0.5) 0%, rgba(60,6,6,0.1) 100%);
+      border-radius: 50% 50% 80% 20%;
+      transform: rotate(5deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blood-3 {
+      position: absolute;
+      top: 15%; left: 20px;
+      width: 8px; height: 8px;
+      background: rgba(90,8,8,0.4);
+      border-radius: 50%;
+      box-shadow: 4px 12px 0 1px rgba(80,6,6,0.25), -2px 20px 0 0px rgba(70,5,5,0.15);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Scroll title */
+    .scroll-title {
+      font-family: var(--font-scroll);
+      font-size: 13px;
+      font-style: italic;
+      text-align: center;
+      color: rgba(200,160,100,0.4);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(120,80,30,0.2);
+    }
+
+    /* Scroll text */
+    .scroll-text {
+      font-family: var(--font-scroll);
+      font-size: 15px;
+      line-height: 1.95;
+      color: #B8A88A;
+      text-align: justify;
+    }
+    .scroll-text p + p { margin-top: 20px; }
+    .scroll-text .scroll-chapter {
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 600;
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: rgba(139,26,26,0.8);
+      display: block;
+      margin-top: 40px;
+      margin-bottom: 12px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(120,80,30,0.15);
+    }
+    .scroll-text .scroll-chapter:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+
+    /* Drop cap */
+    .scroll-text .drop-cap::first-letter {
+      font-family: var(--font-scroll);
+      font-size: 64px;
+      font-style: italic;
+      line-height: 0.7;
+      float: left;
+      margin-right: 8px;
+      margin-top: 6px;
+      color: rgba(139,26,26,0.7);
+    }
+
+    /* Decorative divider */
+    .scroll-divider {
+      text-align: center;
+      margin: 36px 0;
+      color: rgba(200,160,100,0.25);
+      font-size: 18px;
+      letter-spacing: 0.3em;
+    }
+
+    /* Scroll footer */
+    .scroll-footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(120,80,30,0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .scroll-seal {
+      font-family: var(--font-scroll);
+      font-size: 11px;
+      font-style: italic;
+      color: rgba(200,160,100,0.35);
+      letter-spacing: 0.1em;
+    }
+
+    /* =============================================
+       SHOWCASE SECTION
+    ============================================= */
+    .showcase {
+      background-image: linear-gradient(to right, rgba(15,16,20,0.94) 35%, rgba(15,16,20,0.4) 100%), url('showcase_wolf.jpg');
+      background-size: cover;
+      background-position: center;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      padding: 140px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .showcase-inner {
+      max-width: 680px;
+    }
+    .showcase-breadcrumb {
+      margin-bottom: 48px;
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-disabled);
+    }
+    .showcase-breadcrumb span { color: var(--accent-light); }
+    .showcase-heading {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 700;
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: 0.9;
+      color: var(--text-primary);
+      margin-bottom: 28px;
+    }
+    .showcase-metadata { margin-bottom: 28px; }
+    .showcase-desc {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      max-width: 380px;
+    }
+    .showcase-image { position: relative; }
+    .showcase-image img {
+      width: 100%;
+      height: 560px;
+      object-fit: cover;
+      object-position: center;
+      filter: contrast(1.12) brightness(0.85) saturate(0.72);
+    }
+    .showcase-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 60%, rgba(139,26,26,0.08) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .img-marker { position: absolute; z-index: 2; display: flex; align-items: center; gap: 10px; }
+    .img-marker-dot {
+      width: 22px; height: 22px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .img-marker-dot::after {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .img-marker-label {
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-light);
+    }
+    .marker-1 { top: 18%; right: -12px; }
+    .marker-2 { bottom: 30%; left: -12px; }
+
+    /* =============================================
+       CONTENT GRID
+    ============================================= */
+    .content-grid { padding: 120px 0; background: var(--bg-main); }
+    .grid-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .grid-header-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      border: 1px solid var(--border-light);
+    }
+    .card {
+      background: var(--bg-2);
+      padding: 32px;
+      border-right: 1px solid var(--border-light);
+      position: relative;
+      transition: background 300ms;
+    }
+    .card:last-child { border-right: none; }
+    .card:hover { background: var(--bg-3); }
+    .card-image {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .card-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: contrast(1.1) brightness(0.8) saturate(0.6);
+      transition: transform 600ms var(--ease-out-expo);
+    }
+    .card:hover .card-image img { transform: scale(1.04); }
+    .card-image::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 50%;
+      background: linear-gradient(to top, var(--bg-2) 0%, transparent 100%);
+    }
+    .card-category {
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-light);
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+    }
+    .card-desc {
+      font-size: 12px;
+      line-height: 1.75;
+      color: var(--text-muted);
+    }
+
+    /* =============================================
+       FEATURE SECTION
+    ============================================= */
+    .feature {
+      background-image: linear-gradient(to right, rgba(11,12,15,0.95) 35%, rgba(11,12,15,0.4) 100%), url('feature_werewolf.jpg');
+      background-size: cover;
+      background-position: center;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      padding: 140px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-giant {
+      position: absolute;
+      top: 50%;
+      left: -40px;
+      transform: translateY(-50%);
+      font-family: var(--font-display);
+      font-size: 380px;
+      font-weight: 700;
+      font-style: italic;
+      color: rgba(255,255,255,0.015);
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .feature-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+    }
+    .feature-heading {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5vw, 64px);
+      font-weight: 700;
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: 0.88;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+    .feature-desc {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+    .feature-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .feature-tag {
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      transition: border-color 200ms, color 200ms;
+    }
+    .feature-tag:hover { border-color: var(--accent); color: var(--accent-light); }
+    .feature-image {
+      position: relative;
+      height: 600px;
+      overflow: hidden;
+    }
+    .feature-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: contrast(1.15) brightness(0.78) saturate(0.65);
+    }
+    .feature-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--bg-3) 0%, transparent 40%),
+                  linear-gradient(to bottom, transparent 50%, rgba(139,26,26,0.12) 100%);
+    }
+
+    /* =============================================
+       PROFILE SECTION
+    ============================================= */
+    .profile {
+      background: var(--bg-main);
+      padding: 140px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-giant {
+      position: absolute;
+      bottom: -60px; right: -40px;
+      font-family: var(--font-display);
+      font-size: 500px;
+      font-weight: 700;
+      font-style: italic;
+      color: rgba(255,255,255,0.012);
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .profile-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 6fr 6fr;
+      gap: 100px;
+      align-items: center;
+    }
+    .profile-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--accent-dark);
+      padding: 8px 16px;
+      margin-bottom: 40px;
+    }
+    .profile-badge-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+    .profile-badge-text {
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-light);
+    }
+    .profile-heading {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 6vw, 80px);
+      font-weight: 700;
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: 0.86;
+      color: var(--text-primary);
+      margin-bottom: 32px;
+    }
+    .profile-heading span { color: var(--accent-light); }
+    .profile-desc {
+      font-size: 13px;
+      line-height: 1.85;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .profile-metadata {
+      margin: 40px 0;
+      padding: 24px 0;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .profile-image {
+      position: relative;
+      height: 680px;
+      overflow: hidden;
+    }
+    .profile-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: contrast(1.1) brightness(0.88) saturate(0.75);
+    }
+    .profile-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(15,16,20,0.6) 100%);
+      z-index: 1;
+    }
+    .profile-image::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(to top, var(--bg-main) 0%, transparent 100%);
+      z-index: 2;
+    }
+    .profile-image-caption {
+      position: absolute;
+      top: 32px;
+      left: -20px;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-disabled);
+      z-index: 3;
+    }
+
+    /* =============================================
+       CHESS SECTION
+    ============================================= */
+    .chess-section {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border-light);
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .chess-giant {
+      position: absolute;
+      top: 50%; left: -30px;
+      transform: translateY(-50%);
+      font-family: var(--font-display);
+      font-size: 360px;
+      font-weight: 700;
+      font-style: italic;
+      color: rgba(255,255,255,0.012);
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .chess-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .chess-header {
+      display: grid;
+      grid-template-columns: 4fr 8fr;
+      gap: 80px;
+      align-items: start;
+      margin-bottom: 64px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .chess-heading {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5vw, 64px);
+      font-weight: 700;
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: 0.88;
+      color: var(--text-primary);
+    }
+    .chess-intro {
+      font-size: 13px;
+      line-height: 1.85;
+      color: var(--text-muted);
+    }
+    .chess-intro strong { color: var(--text-secondary); font-weight: 500; }
+
+    /* Chess UI */
+    .chess-game-area {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .chess-board-wrap {
+      position: relative;
+      width: 480px;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Override chessboard.js styles for dark theme */
+    #chess-board {
+      width: 480px;
+      max-width: 100%;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+    }
+    .chess-board-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: 0 0 0 1px var(--border),
+                  inset 0 0 40px rgba(139,26,26,0.04);
+    }
+
+    /* Chessboard dark squares override */
+    #chess-board .black-3c85d { background-color: #1E1A18 !important; }
+    #chess-board .white-1e1d7 { background-color: #2D2520 !important; }
+    #chess-board .highlight-yellow { background-color: rgba(139,26,26,0.35) !important; }
+
+    .chess-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .chess-status-bar {
+      padding: 16px 20px;
+      border: 1px solid var(--border-light);
+      background: var(--bg-3);
+    }
+    .chess-status-label {
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .chess-status-value {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+    }
+    .chess-status-value.status-danger { color: var(--accent-light); }
+    .chess-status-value.status-ok { color: #4CAF50; }
+
+    .chess-room-panel { display: flex; flex-direction: column; gap: 16px; }
+    .chess-room-label {
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+    }
+
+    .chess-input-row { display: flex; gap: 0; border: 1px solid var(--border); }
+    .chess-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 11px 16px;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+      outline: none;
+    }
+    .chess-input::placeholder { color: var(--text-disabled); font-weight: 400; }
+    .chess-btn {
+      background: transparent;
+      border: none;
+      border-left: 1px solid var(--border);
+      padding: 11px 20px;
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: background 200ms, color 200ms, border-color 200ms;
+      white-space: nowrap;
+    }
+    .chess-btn:hover { background: var(--accent-dark); color: var(--text-primary); }
+    .chess-btn.btn-primary {
+      background: var(--accent-dark);
+      color: var(--text-primary);
+      border-left-color: var(--accent);
+    }
+    .chess-btn.btn-primary:hover { background: var(--accent); }
+
+    .chess-game-id-display {
+      padding: 16px 20px;
+      border: 1px solid var(--accent-dark);
+      background: rgba(139,26,26,0.06);
+      display: none;
+    }
+    .chess-game-id-display.visible { display: block; }
+    .chess-game-id-label {
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-light);
+      margin-bottom: 8px;
+    }
+    .chess-game-id-code {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-primary);
+      word-break: break-all;
+    }
+    .chess-game-id-note {
+      font-size: 10px;
+      color: var(--text-disabled);
+      margin-top: 8px;
+    }
+
+    .chess-move-log {
+      border: 1px solid var(--border-light);
+      background: var(--bg-3);
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .chess-move-log-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+    }
+    .chess-move-log-body { padding: 12px 16px; }
+    .chess-move-log-body p {
+      font-family: var(--font-display);
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+    .chess-move-log-body p span { color: var(--text-secondary); }
+
+    /* Scrollbar for move log */
+    .chess-move-log::-webkit-scrollbar { width: 3px; }
+    .chess-move-log::-webkit-scrollbar-track { background: var(--bg-3); }
+    .chess-move-log::-webkit-scrollbar-thumb { background: var(--accent-dark); }
+
+    .chess-divider {
+      padding: 0 0 16px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .chess-divider-label {
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-disabled);
+    }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    .footer {
+      background: var(--bg-3);
+      border-top: 1px solid var(--border-light);
+      padding: 64px 0 40px;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 32px;
+    }
+    .footer-contact-label {
+      font-size: 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .footer-contact-value {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 500;
+      font-style: italic;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+    .footer-desc {
+      font-size: 11px;
+      color: var(--text-disabled);
+      margin-top: 8px;
+      max-width: 340px;
+    }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-copy { font-size: 10px; color: var(--text-disabled); letter-spacing: 0.06em; }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-disabled);
+    }
+    .footer-logo span { color: var(--accent); }
+
+    /* =============================================
+       SCROLLBAR
+    ============================================= */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg-3); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-dark); border-radius: 2px; }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 1024px) {
+      .container,
+      .header { padding-left: 32px; padding-right: 32px; }
+      .hero-content { padding-left: 32px; padding-right: 32px; }
+      .parchment { padding: 48px 40px; }
+      .showcase-inner,
+      .feature-inner,
+      .profile-inner,
+      .chess-header,
+      .chess-game-area { grid-template-columns: 1fr; gap: 48px; }
+      .showcase-image img { height: 400px; }
+      .feature-image { height: 420px; }
+      .profile-image { height: 480px; }
+      .cards { grid-template-columns: 1fr; }
+      .card { border-right: none; border-bottom: 1px solid var(--border-light); }
+    }
+    @media (max-width: 768px) {
+      .container,
+      .header { padding-left: 24px; padding-right: 24px; }
+      .hero-content { padding-left: 24px; padding-right: 24px; padding-bottom: 80px; }
+      .nav { display: none; }
+      .hero-img-left { display: none; }
+      .hero-img-right { width: 100%; }
+      .hero-title .line1,
+      .hero-title .line2 { font-size: clamp(48px, 14vw, 72px); }
+      .hero-title .line3 { font-size: clamp(22px, 6vw, 36px); }
+      .hero-meta { flex-wrap: wrap; gap: 24px; }
+      .parchment { padding: 40px 24px; }
+      .scroll-text { font-size: 14px; }
+      .metadata-block { flex-wrap: wrap; gap: 24px; }
+      .hero-giant-text,
+      .feature-giant,
+      .profile-giant,
+      .chess-giant { display: none; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header" role="banner">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-symbol" aria-hidden="true">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 2 L18 8 L24 6 L20 12 L26 14 L20 16 L22 22 L16 19 L14 26 L12 19 L6 22 L8 16 L2 14 L8 12 L4 6 L10 8 Z" stroke="#8B1A1A" stroke-width="0.8" fill="none"/>
+            <circle cx="14" cy="14" r="4" stroke="#8B1A1A" stroke-width="0.8" fill="none"/>
+            <path d="M14 4 C10 8 10 12 14 14 C18 12 18 8 14 4 Z" fill="#8B1A1A" opacity="0.4"/>
+          </svg>
+        </div>
+        <span class="logo-text">HARGREAVES <span>&amp;</span> SONS</span>
+      </div>
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#hero" id="nav-topo">INÍCIO</a>
+        <a href="#scroll-historia" id="nav-historia">HISTÓRIA</a>
+        <a href="#showcase" id="nav-legado">LEGADO</a>
+        <a href="#feature" id="nav-maldicao">MALDIÇÃO</a>
+        <a href="#profile" id="nav-callahan">CALLAHAN</a>
+        <a href="#chess" id="nav-duelo">DUELO</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" id="hero" aria-labelledby="hero-title" role="region">
+    <div class="hero-giant-text" aria-hidden="true">HARGREAVES</div>
+    <div class="hero-images" aria-hidden="false">
+      <div class="hero-img-left">
+        <img src="callahan_hero.jpg" alt="Callahan Alistair Hargreaves" loading="eager" fetchpriority="high" />
+      </div>
+      <div class="hero-img-right">
+        <img src="hero_werewolf.jpg" alt="Lobisomem dos Hargreaves nas Terras Altas" loading="eager" fetchpriority="high" />
+      </div>
+    </div>
+    <div class="hero-bottom-fade" aria-hidden="true"></div>
+    <div class="hero-content">
+      <div class="hero-number reveal">
+        <div class="section-no">
+          <span class="no-label">NO.</span>
+          <span class="no-value">01</span>
+        </div>
+      </div>
+      <p class="eyebrow-accent hero-eyebrow reveal delay-1">Personagem &middot; Hogwarts &middot; RPG &middot; Harry Potter Universe</p>
+      <h1 class="hero-title reveal delay-2" id="hero-title">
+        <span class="line1">CALLAHAN</span>
+        <span class="line2">ALISTAIR</span>
+        <span class="line3">HARGREAVES</span>
+      </h1>
+      <p class="hero-desc reveal delay-3">
+        Herdeiro de uma das famílias mais antigas das Terras Altas escocesas.
+        Portador de uma maldição que percorre três gerações. Um lobo negro
+        sobre campo prateado — força, inteligência e lealdade ao próprio sangue.
+      </p>
+      <div class="hero-meta reveal delay-4">
+        <div class="accent-dot" aria-hidden="true"></div>
+        <div class="metadata-block">
+          <div class="metadata-item">
+            <span class="metadata-label">ORIGEM</span>
+            <span class="metadata-value">Terras Altas, Escócia</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">ESCOLA</span>
+            <span class="metadata-value">Hogwarts</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">CONDIÇÃO</span>
+            <span class="metadata-value">Lycanthropus</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">FAMÍLIA</span>
+            <span class="metadata-value">Hargreaves &amp; Sons</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PARCHMENT / HISTÓRIA ==================== -->
+  <section class="scroll-section" id="scroll-historia" aria-labelledby="scroll-section-title" role="region">
+    <div class="container">
+      <div class="scroll-section-header reveal">
+        <div class="section-no" aria-label="Seção 02">
+          <span class="no-label">NO.</span>
+          <span class="no-value">02</span>
+        </div>
+        <h2 class="scroll-section-title" id="scroll-section-title">
+          A HISTÓRIA<br/>COMPLETA
+        </h2>
+      </div>
+
+      <div class="parchment reveal delay-1">
+        <!-- Blood stain decorations -->
+        <div class="blood-1" aria-hidden="true"></div>
+        <div class="blood-2" aria-hidden="true"></div>
+        <div class="blood-3" aria-hidden="true"></div>
+
+        <div class="parchment-inner">
+          <p class="scroll-title">Arquivos Hargreaves — Documento Confidencial — Terras Altas da Escócia</p>
+
+          <div class="parchment-content-wrap" id="parchment-wrap">
+            <div class="scroll-text">
+
+              <span class="scroll-chapter">I — O Nome e o Castelo</span>
+              <p class="drop-cap">Callahan Alistair Hargreaves nasceu nas Terras Altas da Escócia, dentro de uma das mais antigas, ricas e respeitadas famílias da comunidade bruxa britânica. Os Hargreaves eram o tipo de família cujo nome não precisava ser apresentado. Bastava ser mencionado para que portas se abrissem, vozes diminuíssem e pessoas se lembrassem de antigos favores. Viviam em um enorme castelo ancestral cercado pelas montanhas e pelas florestas escocesas, uma propriedade que permanecia nas mãos da família havia gerações. Acima dos portões de ferro, gravado em pedra, estava o brasão dos Hargreaves: um lobo negro sobre um campo prateado. O animal representava a família muito antes de Callahan nascer, simbolizando força, inteligência, sobrevivência e lealdade ao próprio sangue.</p>
+              <p>A riqueza dos Hargreaves não vinha apenas de terras e propriedades. Durante gerações, a família construiu uma fortuna quase incalculável através da Hargreaves &amp; Sons, um antiquário especializado em artefatos mágicos antigos. O estabelecimento era conhecido entre colecionadores e estudiosos de magia como um dos mais importantes do mundo bruxo. Relíquias recuperadas de ruínas esquecidas, objetos pertencentes a antigos bruxos, artefatos de origem desconhecida e peças cuja idade ultrapassava séculos passavam pelas mãos dos Hargreaves. Alguns eram vendidos por valores absurdos; outros jamais deixavam a coleção particular da família. Callahan cresceu cercado por objetos que poderiam representar a fortuna de uma vida inteira para outras pessoas, mas que para ele eram simplesmente parte da paisagem de sua infância.</p>
+
+              <div class="scroll-divider" aria-hidden="true">— ✦ —</div>
+
+              <span class="scroll-chapter">II — Alistair e a Maldição</span>
+              <p>O responsável por transformar a coleção da família em algo verdadeiramente lendário foi seu avô, Alistair Hargreaves. Explorador, colecionador e estudioso de magia antiga, Alistair passou grande parte da via viajando por lugares esquecidos em busca de artefatos mágicos. Foi durante uma dessas expedições que a história dos Hargreaves começou a tomar um rumo que mudaria a família para sempre.</p>
+              <p>Alistair foi atacado por um lobisomem.</p>
+              <p>Ele sobreviveu ao ataque, mas voltou para a Escócia carregando consigo a maldição da licantropia. A princípio, tentou esconder a condição da própria família. Depois, tentou compreendê-la. Alistair acreditava que conhecimento poderia lhe conceder controle sobre aquilo que havia sido imposto a ele. Estudou a maldição, procurou registros antigos e passou a investigar formas de controlar a transformação. Quanto mais obcecado ficava pela possibilidade de dominar a licantropia, porém, mais sua sanidade parecia se deteriorar.</p>
+              <p>Seu filho, Duncan Hargreaves, foi uma das poucas pessoas que percebeu o quanto o pai estava mudando. Duncan tentou convencê-lo a abandonar as pesquisas e procurar ajuda, mas Alistair se recusava a aceitar que a maldição pudesse determinar o restante de sua vida. As discussões entre os dois se tornaram frequentes e, em determinado momento, um confronto entre pai e filho terminou de maneira trágica. Alistair se transformou durante a briga e atacou Duncan, infectando o próprio filho.</p>
+              <p>Depois disso, Alistair desapareceu.</p>
+              <p>Para a sociedade bruxa, a família declarou que ele havia morrido. Seu nome foi lentamente retirado das conversas públicas e seus feitos passaram a ser tratados como parte da história dos Hargreaves. Duncan assumiu a posição de chefe da família e tentou reconstruir a reputação dos Hargreaves enquanto carregava, em segredo, a mesma maldição que havia destruído seu pai.</p>
+              <p>Entretanto, Alistair nunca morreu. Em algum lugar das florestas remotas das Terras Altas, ele continuou existindo. A licantropia e os anos de isolamento destruíram boa parte de sua sanidade, e Alistair passou a viver como uma criatura que já não parecia pertencer completamente ao mundo dos homens.</p>
+
+              <div class="scroll-divider" aria-hidden="true">— ✦ —</div>
+
+              <span class="scroll-chapter">III — Duncan e Isobel</span>
+              <p>Duncan, por sua vez, passou anos tentando impedir que a história se repetisse. Quando Callahan nasceu, Duncan já havia aprendido a conviver com a própria condição. A família desenvolveu uma rotina rígida para lidar com as noites de lua cheia. Poções, encantamentos, salas de contenção e uma série de medidas de segurança eram utilizados para garantir que Duncan jamais colocasse outra pessoa em perigo. Callahan cresceu sem compreender completamente o motivo de tantas regras, mas sabia que determinadas noites eram diferentes. Sabia que seu pai precisava ficar isolado. Sabia que certas portas não podiam ser abertas. Sabia que havia assuntos sobre os quais ninguém falava.</p>
+              <p>Sua mãe, Isobel Hargreaves, era diferente do restante da família. Embora tivesse se casado com um Hargreaves e aprendido a conviver com o peso daquele sobrenome, nunca tratou a riqueza ou o status da família como uma justificativa para colocar os outros abaixo deles. Foi ela quem tentou garantir que Callahan tivesse uma infância tão normal quanto possível dentro de um castelo cercado de segredos. Era ela quem o lembrava de que o sobrenome Hargreaves não fazia dele uma pessoa melhor do que ninguém.</p>
+              <p>Callahan era profundamente ligado à mãe.</p>
+
+              <div class="scroll-divider" aria-hidden="true">— ✦ —</div>
+
+              <span class="scroll-chapter">IV — A Noite Que Mudou Tudo</span>
+              <p>E foi justamente tentando protegê-lo que Isobel morreu.</p>
+              <p>Callahan tinha apenas dez anos quando uma das noites de lua cheia terminou em tragédia. Algo saiu errado. Duncan perdeu o controle antes que pudesse ser contido e Callahan acabou encontrando o pai durante a transformação. O que aconteceu naquela noite permaneceu fragmentado na memória do garoto: gritos, sangue, garras, o som de objetos sendo destruídos e a imagem da mãe se colocando entre ele e o próprio pai.</p>
+              <p>Isobel conseguiu proteger Callahan. Mas não conseguiu sobreviver.</p>
+              <p>Quando Duncan voltou a ser humano, encontrou a esposa morta e o filho gravemente ferido. A mordida que Callahan carregava no corpo era suficiente para dizer o que aconteceria dali em diante. A maldição havia chegado à terceira geração dos Hargreaves. Callahan havia sido infectado pelo próprio pai.</p>
+              <p>A família fez o que sempre fizera quando alguma coisa ameaçava seu nome: fechou as portas, controlou a narrativa e enterrou a verdade. Para o mundo exterior, a morte de Isobel foi tratada como um acidente envolvendo magia. A condição de Callahan jamais foi divulgada. Duncan se afastou da vida pública e Callahan passou a ser criado sob uma vigilância ainda maior.</p>
+
+              <div class="scroll-divider" aria-hidden="true">— ✦ —</div>
+
+              <span class="scroll-chapter">V — A Herança da Maldição</span>
+              <p>Desde então, Callahan passou a viver com a licantropia. Para ele, a maldição nunca foi uma dádiva ou uma demonstração de poder. Era uma herança que ele jamais havia pedido. Era a lembrança do pai, do avô e da noite em que perdeu a mãe. Mais do que tudo, era a possibilidade de um dia se transformar na mesma criatura que havia destruído sua família. Callahan passou a temor a própria natureza.</p>
+              <p>Aprendeu a acompanhar o ciclo lunar, a tomar poções e a reconhecer os sinais que antecediam uma transformação. Aprendeu a desaparecer durante determinadas noites e a manter as pessoas afastadas quando percebia que estava perdendo o controle. A família fez de tudo para preservar o segredo, e Callahan aprendeu cedo que, entre os Hargreaves, reputação era quase tão importante quanto a própria vida.</p>
+              <p>Apesar de tudo, ele continuou crescendo como um verdadeiro herdeiro Hargreaves. Foi educado dentro dos padrões de uma família tradicional, aprendeu etiqueta, história da magia, encantamentos, conhecimento sobre artefatos e o valor de um sobrenome. Tornou-se inteligente, observador, extremamente controlado e acostumado a esconder aquilo que sentia.</p>
+
+              <div class="scroll-divider" aria-hidden="true">— ✦ —</div>
+
+              <span class="scroll-chapter">VI — Durmstrang e o Escândalo</span>
+              <p>Aos onze anos, Callahan foi enviado para Durmstrang. A escolha não havia sido feita por acaso. A escola era conhecida por sua disciplina, sua tradição e seu contato com formas de magia que combinavam com a educação que ele havia recebido. Para os Hargreaves, Durmstrang também representava um ambiente onde Callahan poderia estudar longe dos olhares mais curiosos da comunidade britânica.</p>
+              <p>Durante o primeiro ano, Callahan se encaixou perfeitamente. Era um garoto de postura impecável, inteligência acima da média e comportamento reservado. Não precisava levantar a voz para fazer alguém perceber sua presença. Seu sobrenome era conhecido, sua família era respeitada e ele sabia exatamente como se comportar em ambientes onde tradição e status significavam alguma coisa.</p>
+              <p>Mas Callahan carregava segredos demais. Durante seu segundo ano em Durmstrang, alguns estudantes começaram a investigar a família Hargreaves. O desaparecimento de Alistair, os rumores sobre a morte de Isobel e, principalmente, a razão pela qual Duncan havia praticamente abandonado a vida pública começaram a levantar suspeitas. Eventualmente, rumores sobre a licantropia chegou até os corredores da escola.</p>
+              <p>Callahan passou a ser observado. E então descobriu que alguns alunos haviam encontrado informações sobre um antigo artefato pertencente à coleção Hargreaves. O objeto havia desaparecido e, segundo as informações que chegaram até ele, seria utilizado para provocar uma transformação mágica em outro estudante.</p>
+              <p>Callahan decidiu agir sozinho. Ele não podia procurar professores sem explicar como sabia sobre o artefato e, pior, sem correr o risco de que alguém investigasse a família. Então tentou impedir o plano por conta própria. O resultado foi catastrófico. Um confronto envolvendo magia perigosa terminou com um estudante gravemente ferido, o artefato destruído e Callahan encontrado no local com sangue nas mãos.</p>
+              <p>Callahan tornou-se o centro de um escândalo. O poder e a influência dos Hargreaves entraram em ação. O caso foi abafado, versões foram cuidadosamente construídas, informações desapareceram e Callahan foi retirado de Durmstrang antes que o escândalo pudesse crescer. Oficialmente, ele não havia sido expulso. Apenas continuaria sua educação em outro lugar por motivos familiares.</p>
+
+              <div class="scroll-divider" aria-hidden="true">— ✦ —</div>
+
+              <span class="scroll-chapter">VII — Hogwarts</span>
+              <p>O destino escolhido foi Hogwarts. Aos treze anos, Callahan Alistair Hargreaves atravessou pela primeira vez os portões de Hogwarts carregando um sobrenome que significava muito mais do que qualquer outro aluno poderia imaginar. Para os estudantes, ele era apenas o garoto escocês vindo de Durmstrang, herdeiro de uma família extremamente rica e dono de uma postura talvez arrogante demais para alguém tão jovem.</p>
+              <p>Para Callahan, entretanto, Hogwarts era uma espécie de exílio. Ele havia sido enviado para longe de casa para que o nome Hargreaves permanecesse limpo. Recebeu instruções claras: não falar sobre Durmstrang. Não falar sobre o incidente. Não falar sobre Alistair. Não falar sobre a condição de Duncan. E, acima de tudo, não permitir que ninguém descobrisse que ele próprio carregava a maldição da licantropia.</p>
+              <p>Callahan chegou a Hogwarts tentando controlar tudo ao seu redor — as palavras que dizia, as pessoas com quem conversava, a maneira como era visto, as emoções que demonstrava. E, principalmente, aquilo que havia dentro dele. Porque, no fundo, existia uma pergunta que o acompanhava desde a noite em que sua mãe morreu: seu avô havia perdido o controle, seu pai havia perdido o controle, e agora ele carregava a mesma maldição. Callahan não sabia se a licantropia era apenas uma doença ou se, de alguma maneira, a história dos Hargreaves estava condenada a se repetir.</p>
+              <p>Ele tinha treze anos, um castelo esperando por ele na Escócia, uma fortuna que jamais conseguiria gastar, um sobrenome capaz de abrir praticamente qualquer porta e um brasão de lobo gravado em tudo o que pertencia à sua família. Mas, pela primeira vez, estava longe de casa. E talvez Hogwarts fosse o primeiro lugar onde Callahan teria a oportunidade de descobrir quem realmente era quando ninguém estivesse olhando apenas para o nome que vinha depois do seu primeiro. Porque, durante toda a sua vida, Callahan havia sido ensinado que um Hargreaves deveria proteger o próprio legado. Agora ele precisava descobrir se conseguiria proteger a si mesmo.</p>
+
+            </div><!-- /scroll-text -->
+            <div class="parchment-fade" id="parchment-fade" aria-hidden="true"></div>
+          </div><!-- /parchment-content-wrap -->
+
+          <div class="read-more-btn-wrap" id="read-more-btn-wrap">
+            <button class="read-more-link" onclick="expandHistory()">Continue lendo...</button>
+          </div>
+
+          <div class="scroll-footer">
+            <span class="scroll-seal">In sanguine veritas — Hargreaves, Terras Altas</span>
+            <span class="scroll-seal" aria-hidden="true">✦</span>
+            <span class="scroll-seal">Documento confidencial · Terceira Geração</span>
+          </div>
+        </div><!-- /parchment-inner -->
+      </div><!-- /parchment -->
+    </div>
+  </section>
+
+  <!-- ==================== SHOWCASE ==================== -->
+  <section class="showcase" id="showcase" aria-labelledby="showcase-heading" role="region">
+    <div class="container">
+      <div class="showcase-inner">
+        <div class="showcase-info">
+          <p class="showcase-breadcrumb reveal">
+            <span>HARGREAVES &amp; SONS</span> › ANTIQUÁRIO › HISTÓRIA
+          </p>
+          <h2 class="showcase-heading reveal delay-1" id="showcase-heading">
+            O LEGADO<br/>DA FAMÍLIA
+          </h2>
+          <div class="showcase-metadata metadata-block reveal delay-2">
+            <div class="metadata-item">
+              <span class="metadata-label">FUNDAÇÃO</span>
+              <span class="metadata-value">Séc. XV</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">LOCALIZAÇÃO</span>
+              <span class="metadata-value">Escócia</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">STATUS</span>
+              <span class="metadata-value">Puro-Sangue</span>
+            </div>
+          </div>
+          <p class="showcase-desc reveal delay-3">
+            Gerações de exploradores, colecionadores e estudiosos de magia antiga.
+            O antiquário Hargreaves &amp; Sons era referência mundial entre colecionadores
+            do mundo bruxo — relíquias de ruínas esquecidas, artefatos de origem
+            desconhecida e peças cujas idades ultrapassavam séculos.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FEATURE SECTION ==================== -->
+  <section class="feature" id="feature" aria-labelledby="feature-heading" role="region">
+    <div class="feature-giant" aria-hidden="true">LYCANTHROPUS</div>
+    <div class="container">
+      <div class="feature-inner">
+        <div class="feature-left">
+          <div class="section-no reveal" aria-label="Seção 03">
+            <span class="no-label">NO.</span>
+            <span class="no-value">03</span>
+          </div>
+          <h2 class="feature-heading reveal delay-1" id="feature-heading">
+            A<br/>MALDIÇÃO
+          </h2>
+          <p class="feature-desc reveal delay-2">
+            A licantropia nunca foi encarada como dádiva ou poder. Para Callahan,
+            era a herança que jamais havia pedido — a lembrança do pai, do avô
+            e da noite em que perdeu a mãe. A possibilidade permanente de se
+            tornar a mesma criatura que destruiu sua família.
+          </p>
+          <div class="feature-tags reveal delay-3">
+            <span class="feature-tag">LICANTROPIA</span>
+            <span class="feature-tag">LUA CHEIA</span>
+            <span class="feature-tag">TRÊS GERAÇÕES</span>
+            <span class="feature-tag">CONTROLE</span>
+            <span class="feature-tag">SEGREDO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROFILE SECTION ==================== -->
+  <section class="profile" id="profile" aria-labelledby="profile-heading" role="region">
+    <div class="profile-giant" aria-hidden="true">HARGREAVES</div>
+    <div class="container">
+      <div class="profile-inner">
+        <div class="profile-left">
+          <div class="profile-badge reveal">
+            <div class="profile-badge-dot" aria-hidden="true"></div>
+            <span class="profile-badge-text">Hogwarts &middot; Terceiro Ano &middot; Personagem Ativo</span>
+          </div>
+          <h2 class="profile-heading reveal delay-1" id="profile-heading">
+            CALLAHAN<br/>
+            <span>ALISTAIR</span><br/>
+            HARGREAVES
+          </h2>
+          <p class="profile-desc reveal delay-2">
+            Treze anos. Inteligente, observador, extremamente controlado e
+            acostumado a esconder aquilo que sente. Um garoto que aprendeu cedo
+            que reputação é quase tão importante quanto a própria vida — e que
+            agora, pela primeira vez, está longe das regras dos Hargreaves.
+          </p>
+          <p class="profile-desc reveal delay-2">
+            Hogwarts pode ser seu exílio. Ou pode ser o primeiro lugar onde
+            Callahan descobre quem realmente é quando ninguém está olhando
+            apenas para o nome que vem depois do seu.
+          </p>
+          <div class="profile-metadata metadata-block reveal delay-3">
+            <div class="metadata-item">
+              <span class="metadata-label">IDADE</span>
+              <span class="metadata-value">13 anos</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">ANTERIOR</span>
+              <span class="metadata-value">Durmstrang</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">BRASÃO</span>
+              <span class="metadata-value">Lobo Negro</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-image reveal-img delay-1">
+          <img src="callahan_profile.jpg" alt="Retrato de Callahan Alistair Hargreaves" loading="lazy" />
+          <span class="profile-image-caption" aria-hidden="true">HERDEIRO HARGREAVES — TERCEIRA GERAÇÃO</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CHESS SECTION ==================== -->
+  <section class="chess-section" id="chess" aria-labelledby="chess-heading" role="region">
+    <div class="chess-giant" aria-hidden="true">DUELO</div>
+    <div class="container chess-inner">
+
+      <div class="chess-header">
+        <div>
+          <div class="section-no reveal" aria-label="Seção 04">
+            <span class="no-label">NO.</span>
+            <span class="no-value">04</span>
+          </div>
+          <h2 class="chess-heading reveal delay-1" id="chess-heading">
+            DUELO<br/>DE XADREZ
+          </h2>
+        </div>
+        <p class="chess-intro reveal delay-2">
+          <strong>Jogue xadrez em tempo real</strong> diretamente nesta página.
+          Crie uma partida e compartilhe o código com o adversário — a conexão é
+          direta entre os dois navegadores, sem servidor. Dois jogadores,
+          uma tabuleiro, zero intermediários.
+        </p>
+      </div>
+
+      <div class="chess-game-area reveal">
+        <!-- Board -->
+        <div class="chess-board-wrap">
+          <div id="chess-board" style="width: 100%; max-width: 480px; margin: 0 auto;"></div>
+          <div class="chess-board-overlay" aria-hidden="true"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="chess-controls">
+
+          <!-- Status -->
+          <div class="chess-status-bar">
+            <p class="chess-status-label">STATUS DA PARTIDA</p>
+            <p class="chess-status-value" id="chess-status">Aguardando início</p>
+          </div>
+
+          <!-- Game ID display (host) -->
+          <div class="chess-game-id-display" id="game-id-display">
+            <p class="chess-game-id-label">Código da partida — compartilhe com o adversário</p>
+            <p class="chess-game-id-code" id="game-id-code">—</p>
+            <p class="chess-game-id-note">O adversário deve colar este código no campo abaixo e clicar em ENTRAR</p>
+          </div>
+
+          <!-- Create game -->
+          <div class="chess-room-panel">
+            <div class="chess-divider">
+              <p class="chess-divider-label">Criar partida (você joga de brancas)</p>
+            </div>
+            <div class="chess-input-row">
+              <button class="chess-btn btn-primary" id="btn-create" onclick="createGame()">
+                CRIAR PARTIDA
+              </button>
+            </div>
+          </div>
+
+          <!-- Join game -->
+          <div class="chess-room-panel">
+            <div class="chess-divider">
+              <p class="chess-divider-label">Entrar em partida (você joga de negras)</p>
+            </div>
+            <div class="chess-input-row">
+              <input
+                type="text"
+                class="chess-input"
+                id="join-id-input"
+                placeholder="CÓDIGO DA PARTIDA"
+                aria-label="Código da partida"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button class="chess-btn" id="btn-join" onclick="joinGame()">ENTRAR</button>
+            </div>
+          </div>
+
+          <!-- Move log -->
+          <div class="chess-move-log" id="move-log" aria-live="polite" aria-label="Registro de movimentos">
+            <div class="chess-move-log-header">REGISTRO DE MOVIMENTOS</div>
+            <div class="chess-move-log-body" id="move-log-body">
+              <p>Aguardando início da partida...</p>
+            </div>
+          </div>
+
+        </div><!-- /chess-controls -->
+      </div><!-- /chess-game-area -->
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <p class="footer-contact-label">FICHAS DE PERSONAGEM</p>
+          <p class="footer-contact-value">RPG · Harry Potter Universe</p>
+          <p class="footer-desc">
+            Universo expandido não oficial. Personagem criado para fins
+            de roleplay em cenário inspirado nos livros de J.K. Rowling.
+          </p>
+        </div>
+        <div class="section-no" aria-hidden="true" style="opacity:0.3">
+          <span class="no-label">BRASÃO</span>
+          <span class="no-value" style="font-size:56px;color:var(--accent-dark)">⚜</span>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 — HARGREAVES CHARACTER PAGE — RPG UNIVERSE</p>
+        <p class="footer-logo">HARGREAVES <span>&amp;</span> SONS</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <!-- jQuery (required by chessboard.js) -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- Chess.js (move validation) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+  <!-- Chessboard.js (board rendering) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+  <!-- PeerJS (P2P real-time connection) -->
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+
+  <script>
+    /* =============================================
+       REVEAL ON SCROLL — IntersectionObserver
+    ============================================= */
+    (function () {
+      var revealEls = document.querySelectorAll('.reveal, .reveal-img');
+
+      if (!('IntersectionObserver' in window)) {
+        revealEls.forEach(function(el) { el.classList.add('revealed'); });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+
+      revealEls.forEach(function(el) { observer.observe(el); });
+
+      /* Hero triggers immediately */
+      document.querySelectorAll('.hero .reveal').forEach(function(el, i) {
+        setTimeout(function() { el.classList.add('revealed'); }, i * 100 + 200);
+      });
+
+      /* Subtle hero parallax */
+      var imgLeft  = document.querySelector('.hero-img-left img');
+      var imgRight = document.querySelector('.hero-img-right img');
+      if (imgLeft && imgRight) {
+        var ticking = false;
+        window.addEventListener('scroll', function() {
+          if (!ticking) {
+            requestAnimationFrame(function() {
+              var y = window.scrollY;
+              imgLeft.style.transform  = 'translateY(' + (y * 0.18) + 'px)';
+              imgRight.style.transform = 'translateY(' + (y * 0.14) + 'px)';
+              ticking = false;
+            });
+            ticking = true;
+          }
+        }, { passive: true });
+      }
+    })();
+
+    /* =============================================
+       CHESS — P2P via PeerJS
+    ============================================= */
+    var peer    = null;
+    var conn    = null;
+    var game    = null;
+    var board   = null;
+    var myColor = null;
+    var moveCount = 0;
+
+    function setStatus(msg, type) {
+      var el = document.getElementById('chess-status');
+      el.textContent = msg;
+      el.className = 'chess-status-value';
+      if (type === 'danger') el.classList.add('status-danger');
+      if (type === 'ok') el.classList.add('status-ok');
+    }
+
+    function logMove(move, color) {
+      moveCount++;
+      var body = document.getElementById('move-log-body');
+      var isFirst = body.querySelector('p') && body.querySelector('p').textContent.indexOf('Aguardando') !== -1;
+      if (isFirst) body.innerHTML = '';
+      var p = document.createElement('p');
+      var colorLabel = color === 'w' ? 'Brancas' : 'Negras';
+      p.innerHTML = '<span>' + moveCount + '.</span> ' + colorLabel + ' — ' + move.san;
+      body.appendChild(p);
+      body.parentElement.scrollTop = body.parentElement.scrollHeight;
+    }
+
+    function initBoard(orientation) {
+      game = new Chess();
+      var cfg = {
+        draggable: true,
+        position: 'start',
+        orientation: orientation,
+        pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png',
+        onDragStart: onDragStart,
+        onDrop: onDrop,
+        onSnapEnd: onSnapEnd
+      };
+      if (board) board.destroy();
+      board = Chessboard('chess-board', cfg);
+    }
+
+    function onDragStart(source, piece) {
+      if (game.game_over()) return false;
+
+      // Se em modo online
+      if (conn && myColor) {
+        var myTurn = (myColor === 'white' && game.turn() === 'w') ||
+                     (myColor === 'black' && game.turn() === 'b');
+        if (!myTurn) return false;
+        var isMyPiece = (myColor === 'white' && piece.search(/^w/) !== -1) ||
+                        (myColor === 'black' && piece.search(/^b/) !== -1);
+        return isMyPiece;
+      }
+
+      // Se em modo local (Pass & Play)
+      var turnColor = game.turn();
+      if ((turnColor === 'w' && piece.search(/^b/) !== -1) ||
+          (turnColor === 'b' && piece.search(/^w/) !== -1)) {
+        return false;
+      }
+      return true;
+    }
+
+    function onDrop(source, target) {
+      var move = game.move({ from: source, to: target, promotion: 'q' });
+      if (!move) return 'snapback';
+
+      logMove(move, move.color);
+
+      // Envia movimento se em modo online
+      if (conn) {
+        conn.send({ type: 'move', move: { from: source, to: target, promotion: 'q' } });
+      }
+
+      updateStatus();
+    }
+
+    function onSnapEnd() {
+      board.position(game.fen());
+    }
+
+    function updateStatus() {
+      if (game.in_checkmate()) {
+        var winner = game.turn() === 'w' ? 'Negras' : 'Brancas';
+        setStatus('Xeque-mate! ' + winner + ' vencem.', 'ok');
+      } else if (game.in_draw()) {
+        setStatus('Empate.', 'danger');
+      } else if (game.in_check()) {
+        var inCheck = game.turn() === 'w' ? 'Brancas' : 'Negras';
+        setStatus(inCheck + ' em xeque!', 'danger');
+      } else {
+        var turn = game.turn() === 'w' ? 'Brancas' : 'Negras';
+        setStatus('Vez das ' + turn, '');
+      }
+    }
+
+    function setupConnection(connection, color) {
+      conn = connection;
+      myColor = color;
+
+      conn.on('data', function(data) {
+        if (data.type === 'move') {
+          var move = game.move(data.move);
+          if (move) {
+            logMove(move, move.color);
+            board.position(game.fen());
+            updateStatus();
+          }
+        }
+        if (data.type === 'ready') {
+          setStatus('Adversário conectado! Partida iniciada.', 'ok');
+          initBoard(color);
+          updateStatus();
+        }
+      });
+
+      conn.on('close', function() {
+        setStatus('Adversário desconectado. Voltando ao modo local.', 'danger');
+        conn = null;
+        myColor = null;
+      });
+    }
+
+    function createGame() {
+      if (peer) { peer.destroy(); }
+      setStatus('Criando partida...', '');
+      document.getElementById('btn-create').textContent = 'AGUARDANDO...';
+      document.getElementById('btn-create').disabled = true;
+
+      peer = new Peer();
+
+      peer.on('open', function(id) {
+        document.getElementById('game-id-code').textContent = id;
+        document.getElementById('game-id-display').classList.add('visible');
+        setStatus('Partida criada. Aguardando adversário...', '');
+        initBoard('white');
+      });
+
+      peer.on('connection', function(connection) {
+        setupConnection(connection, 'white');
+        connection.on('open', function() {
+          connection.send({ type: 'ready' });
+          setStatus('Adversário conectado! Você joga de brancas.', 'ok');
+          updateStatus();
+        });
+      });
+
+      peer.on('error', function(err) {
+        setStatus('Erro: ' + err.type + '. Verifique se está em HTTPS.', 'danger');
+        document.getElementById('btn-create').textContent = 'CRIAR PARTIDA';
+        document.getElementById('btn-create').disabled = false;
+      });
+    }
+
+    function joinGame() {
+      var gameId = document.getElementById('join-id-input').value.trim();
+      if (!gameId) {
+        setStatus('Digite o código da partida.', 'danger');
+        return;
+      }
+      if (peer) { peer.destroy(); }
+      setStatus('Conectando...', '');
+      document.getElementById('btn-join').textContent = 'CONECTANDO...';
+      document.getElementById('btn-join').disabled = true;
+
+      peer = new Peer();
+
+      peer.on('open', function() {
+        var connection = peer.connect(gameId, { reliable: true });
+
+        connection.on('open', function() {
+          setupConnection(connection, 'black');
+          initBoard('black');
+          setStatus('Conectado! Aguardando brancas jogarem.', 'ok');
+          updateStatus();
+        });
+
+        connection.on('error', function(err) {
+          setStatus('Erro ao conectar: ' + err, 'danger');
+          document.getElementById('btn-join').textContent = 'ENTRAR';
+          document.getElementById('btn-join').disabled = false;
+        });
+      });
+
+      peer.on('error', function(err) {
+        setStatus('Erro: ' + err.type, 'danger');
+        document.getElementById('btn-join').textContent = 'ENTRAR';
+        document.getElementById('btn-join').disabled = false;
+      });
+    }
+
+    function expandHistory() {
+      var wrap = document.getElementById('parchment-wrap');
+      var btnWrap = document.getElementById('read-more-btn-wrap');
+      if (wrap && btnWrap) {
+        wrap.classList.add('expanded');
+        btnWrap.style.display = 'none';
+      }
+    }
+
+    /* Initialize board on startup (Local Play by default) */
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof Chessboard !== 'undefined' && typeof Chess !== 'undefined') {
+        game = new Chess();
+        
+        board = Chessboard('chess-board', {
+          draggable: true,
+          position: 'start',
+          pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png',
+          onDragStart: onDragStart,
+          onDrop: onDrop,
+          onSnapEnd: onSnapEnd
+        });
+
+        window.addEventListener('resize', function() {
+          if (board) board.resize();
+        });
+
+        updateStatus();
+        setStatus('Modo Local ativo. Mova as peças para jogar na mesma tela.', '');
+      }
+    });
+  </script>
+
+</body>
+</html>
